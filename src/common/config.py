@@ -1,6 +1,8 @@
+from __future__ import annotations
+
+import json
 from pathlib import Path
 
-import yaml
 from pydantic import BaseModel
 
 
@@ -44,7 +46,24 @@ class Settings(BaseModel):
     training: TrainingConfig
 
 
+def _load_text_config(path: Path) -> dict:
+    text = path.read_text(encoding="utf-8")
+    suffix = path.suffix.lower()
+    if suffix == ".json":
+        return json.loads(text)
+
+    try:
+        import yaml  # type: ignore
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(
+            "PyYAML is required for YAML configs. Install with `pip install pyyaml` "
+            "or provide a .json config file."
+        ) from exc
+
+    return yaml.safe_load(text)
+
+
 def load_settings(config_path: str | Path) -> Settings:
-    with Path(config_path).open("r", encoding="utf-8") as f:
-        raw = yaml.safe_load(f)
+    path = Path(config_path)
+    raw = _load_text_config(path)
     return Settings.model_validate(raw)
