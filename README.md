@@ -106,3 +106,13 @@ python -m src.agent.chat run   --config configs/settings.local.yaml   --adapter-
 # 2) 하네스 반복 루프(에이전트 서비스 루프)
 python -m src.agent.runtime run --config configs/settings.local.yaml
 ```
+
+
+## Agent Loop 실행 파일
+
+```bash
+python -m src.agent.Agent_loop_execution run --config configs/settings.local.yaml
+
+# iteration override
+python -m src.agent.Agent_loop_execution run --config configs/settings.local.yaml --max-iterations 12
+```
