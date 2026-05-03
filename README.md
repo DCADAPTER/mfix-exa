@@ -95,3 +95,14 @@ trainer.train(
     resume_adapter_path="./artifacts/qlora"
 )
 ```
+
+
+## 반복 루프 실험용 커맨드
+
+```bash
+# 1) 정책 주입 + 로컬 채팅 루프
+python -m src.agent.chat run   --config configs/settings.local.yaml   --adapter-path ./artifacts/qlora   --instruction-path policies/AGENT_POLICY.md   --memory-turns 8
+
+# 2) 하네스 반복 루프(에이전트 서비스 루프)
+python -m src.agent.runtime run --config configs/settings.local.yaml
+```
