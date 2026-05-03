@@ -74,5 +74,11 @@ def run(
         print(f"assistant> {reply}")
 
 
+@cli.command("version")
+def version() -> None:
+    """Show chat CLI version info."""
+    print("mfix-exa chat cli")
+
+
 if __name__ == "__main__":
     cli()
