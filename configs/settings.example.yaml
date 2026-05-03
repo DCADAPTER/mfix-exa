@@ -1,0 +1,28 @@
+project:
+  name: mfix-exa-agentic
+  env: local
+
+mcp_server:
+  host: 0.0.0.0
+  port: 8080
+  enabled_tools:
+    - parse_output
+    - validate_input
+
+agent:
+  model_provider: local
+  model_name: llama-3.1-8b-instruct
+  max_iterations: 8
+
+harness:
+  simulator_cmd: "mfixsolver -f case.mfx"
+  work_dir: "./workspace/runs"
+  timeout_sec: 1800
+
+training:
+  base_model: "meta-llama/Llama-3.1-8B"
+  dataset_dir: "./data/curated"
+  output_dir: "./artifacts/qlora"
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
