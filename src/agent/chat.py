@@ -16,11 +16,11 @@ def build_prompt(user_text: str, system_text: str | None = None) -> str:
 
 @cli.command()
 def run(
-    config: str,
-    adapter_path: str | None = None,
-    max_new_tokens: int = 512,
-    temperature: float = 0.2,
-    top_p: float = 0.95,
+    config: str = typer.Option(..., "--config", help="Path to settings YAML/JSON"),
+    adapter_path: str | None = typer.Option(None, "--adapter-path"),
+    max_new_tokens: int = typer.Option(512, "--max-new-tokens"),
+    temperature: float = typer.Option(0.2, "--temperature"),
+    top_p: float = typer.Option(0.95, "--top-p"),
 ) -> None:
     """Load base model + LoRA adapter and start an interactive chat loop."""
     from peft import PeftModel
