@@ -58,3 +58,14 @@ python -m src.agent.runtime --config configs/settings.local.yaml
 - 출력 파일 해석용 MCP tools 구현 확장
 - QLoRA 학습용 데이터 큐레이션 파이프라인 구체화
 - 자동 하이퍼파라미터 탐색 루프(Agent↔Harness) 연결
+
+
+## 학습된 모델 채팅 실행
+
+```bash
+# 학습 결과(LoRA adapter)가 settings의 training.output_dir에 있다고 가정
+python -m src.agent.chat run --config configs/settings.local.yaml
+
+# 또는 어댑터 경로를 명시
+python -m src.agent.chat run --config configs/settings.local.yaml --adapter-path ./artifacts/qlora
+```
