@@ -7,6 +7,6 @@ def test_sliding_window_memory_max_turns() -> None:
     mem.add("assistant", "b")
     mem.add("user", "c")
     text = mem.to_text()
-    assert "a" not in text
-    assert "b" in text
-    assert "c" in text
+    assert "[user]\na" not in text
+    assert "[assistant]\nb" in text
+    assert "[user]\nc" in text
