@@ -136,19 +136,28 @@ class QLoRATrainer:
             else None
         )
 
-        args = TrainingArguments(
-            output_dir=self.settings.training.output_dir,
-            per_device_train_batch_size=batch_size,
-            per_device_eval_batch_size=batch_size,
-            gradient_accumulation_steps=grad_accum,
-            learning_rate=learning_rate,
-            num_train_epochs=num_epochs,
-            logging_steps=10,
-            save_strategy="epoch",
-            evaluation_strategy="epoch" if eval_ds is not None else "no",
-            bf16=True,
-            report_to="none",
-        )
+        import inspect
+
+        arg_names = set(inspect.signature(TrainingArguments.__init__).parameters)
+        train_kwargs = {
+            "output_dir": self.settings.training.output_dir,
+            "per_device_train_batch_size": batch_size,
+            "per_device_eval_batch_size": batch_size,
+            "gradient_accumulation_steps": grad_accum,
+            "learning_rate": learning_rate,
+            "num_train_epochs": num_epochs,
+            "logging_steps": 10,
+            "save_strategy": "epoch",
+            "bf16": True,
+            "report_to": "none",
+        }
+        eval_mode = "epoch" if eval_ds is not None else "no"
+        if "evaluation_strategy" in arg_names:
+            train_kwargs["evaluation_strategy"] = eval_mode
+        elif "eval_strategy" in arg_names:
+            train_kwargs["eval_strategy"] = eval_mode
+
+        args = TrainingArguments(**train_kwargs)
 
         trainer = Trainer(
             model=model,
