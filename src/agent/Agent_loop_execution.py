@@ -21,5 +21,10 @@ def run(
     runtime.loop()
 
 
+@cli.command("version")
+def version() -> None:
+    print("mfix-exa agent loop runner")
+
+
 if __name__ == "__main__":
     cli()
