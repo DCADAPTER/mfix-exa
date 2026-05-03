@@ -63,6 +63,7 @@ class QLoRATrainer:
         num_epochs: int = 2,
         learning_rate: float = 2e-4,
         max_length: int = 2048,
+        resume_adapter_path: str | None = None,
     ) -> None:
         """Run QLoRA SFT training from ChatML JSONL data.
 
@@ -74,7 +75,7 @@ class QLoRATrainer:
         - accelerate
         """
         from datasets import Dataset
-        from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+        from peft import LoraConfig, PeftModel, get_peft_model, prepare_model_for_kbit_training
         from transformers import (
             AutoModelForCausalLM,
             AutoTokenizer,
@@ -105,15 +106,20 @@ class QLoRATrainer:
         )
         model = prepare_model_for_kbit_training(model)
 
-        lora_cfg = LoraConfig(
-            r=self.settings.training.lora_r,
-            lora_alpha=self.settings.training.lora_alpha,
-            lora_dropout=self.settings.training.lora_dropout,
-            bias="none",
-            task_type="CAUSAL_LM",
-            target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "up_proj", "down_proj", "gate_proj"],
-        )
-        model = get_peft_model(model, lora_cfg)
+        if resume_adapter_path:
+            if not Path(resume_adapter_path).exists():
+                raise FileNotFoundError(f"resume_adapter_path not found: {resume_adapter_path}")
+            model = PeftModel.from_pretrained(model, resume_adapter_path, is_trainable=True)
+        else:
+            lora_cfg = LoraConfig(
+                r=self.settings.training.lora_r,
+                lora_alpha=self.settings.training.lora_alpha,
+                lora_dropout=self.settings.training.lora_dropout,
+                bias="none",
+                task_type="CAUSAL_LM",
+                target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "up_proj", "down_proj", "gate_proj"],
+            )
+            model = get_peft_model(model, lora_cfg)
 
         def to_text(sample: dict[str, str]) -> dict[str, str]:
             text = (

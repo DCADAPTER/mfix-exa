@@ -69,3 +69,29 @@ python -m src.agent.chat run --config configs/settings.local.yaml
 # 또는 어댑터 경로를 명시
 python -m src.agent.chat run --config configs/settings.local.yaml --adapter-path ./artifacts/qlora
 ```
+
+
+## QLoRA 단계별(순차) 학습
+
+- 처음부터 학습: `resume_adapter_path=None` (기본값)
+- 기존 어댑터 이어학습: `resume_adapter_path="./artifacts/qlora_stage1"`
+
+예시:
+
+```python
+from src.common.config import load_settings
+from src.training.qlora import QLoRATrainer
+
+settings = load_settings("configs/settings.local.yaml")
+trainer = QLoRATrainer(settings)
+
+# 1단계: 1.jsonl로 초기 학습
+trainer.train(train_jsonl="1.jsonl", eval_jsonl=None)
+
+# 2단계: 1단계 어댑터를 불러와 2.jsonl로 추가 학습
+trainer.train(
+    train_jsonl="2.jsonl",
+    eval_jsonl=None,
+    resume_adapter_path="./artifacts/qlora"
+)
+```
