@@ -1,0 +1,9 @@
+model:
+  provider: openai_or_local
+  name: proposer-mini
+rag:
+  index_path: rag/proposer
+training:
+  dataset_path: data/proposer/train.jsonl
+harness:
+  constraints_profile: parameter_bounds_v1
