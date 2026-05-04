@@ -1,0 +1,2 @@
+# Example initial input (toy)
+x=5.0
