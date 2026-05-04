@@ -20,3 +20,8 @@ class ProposerAgent:
             ("case_6", "x=4.0", 0.30),
         ]
         return [CaseProposal(*row) for row in base[:n_cases]]
+
+
+# TODO(core):
+# - define production-grade implementation tasks for this module.
+# - keep this section updated as features are implemented.

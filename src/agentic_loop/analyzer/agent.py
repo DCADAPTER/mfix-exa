@@ -16,3 +16,8 @@ class AnalyzerAgent:
         causes = ["numerical instability"] if "diverge" in err else ["boundary/input mismatch"]
         evidence = [state.reference.error_log[:200]]
         return Insight(causes=causes, evidence=evidence, confidence=0.55)
+
+
+# TODO(core):
+# - define production-grade implementation tasks for this module.
+# - keep this section updated as features are implemented.

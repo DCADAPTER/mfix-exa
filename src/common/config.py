@@ -67,3 +67,8 @@ def load_settings(config_path: str | Path) -> Settings:
     path = Path(config_path)
     raw = _load_text_config(path)
     return Settings.model_validate(raw)
+
+
+# TODO(core):
+# - define production-grade implementation tasks for this module.
+# - keep this section updated as features are implemented.

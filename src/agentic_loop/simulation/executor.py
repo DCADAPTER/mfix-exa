@@ -10,3 +10,8 @@ class SimulationExecutor:
 
     def run_case(self, case: CaseProposal, iteration: int) -> dict[str, str]:
         return self.harness.run_once(f"iteration={iteration}: {case.patch}")
+
+
+# TODO(core):
+# - define production-grade implementation tasks for this module.
+# - keep this section updated as features are implemented.

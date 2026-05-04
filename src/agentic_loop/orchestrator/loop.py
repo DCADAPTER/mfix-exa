@@ -24,3 +24,8 @@ class AgenticSimulationLoop:
         for case in state.selected_cases:
             _ = self.simulator.run_case(case, iteration)
         return state
+
+
+# TODO(core):
+# - define production-grade implementation tasks for this module.
+# - keep this section updated as features are implemented.

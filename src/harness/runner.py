@@ -36,3 +36,8 @@ class SimulationHarness:
             "plan": plan,
             "simulator_cmd": self.settings.harness.simulator_cmd,
         }
+
+
+# TODO(core):
+# - define production-grade implementation tasks for this module.
+# - keep this section updated as features are implemented.

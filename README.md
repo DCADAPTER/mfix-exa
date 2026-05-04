@@ -21,3 +21,8 @@ python -m src.agent.initial_ref_loop run \
   --analyzer-model analyzer-mini \
   --proposer-model proposer-mini
 ```
+
+
+## TODO
+
+- 상세 구현 TODO: `docs/TODO_CORE.md`
