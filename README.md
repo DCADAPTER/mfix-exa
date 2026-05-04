@@ -142,3 +142,18 @@ python examples/simple_optimization/objective.py --x 3
 ```bash
 python -m src.agent.analyzer_proposer_loop run   --config examples/simple_optimization/settings.local.yaml   --analyzer-model analyzer-mini   --proposer-model proposer-mini   --max-iterations 8
 ```
+
+
+## Initial Reference 기반 Agentic Simulation Loop (권장)
+
+구조:
+- Analyzer (에러 로그 + 입력 기반 Insight)
+- Proposer (다중 케이스/파라미터 제안)
+- Active Learning Filter (budget 기반 케이스 선별)
+- Simulation Executor (선별 케이스 실행)
+
+실행:
+
+```bash
+python -m src.agent.initial_ref_loop run   --config examples/simple_optimization/settings.local.yaml   --initial-input "$(cat examples/initial_reference/initial_input.txt)"   --initial-error-log "$(cat examples/initial_reference/error_log.txt)"   --analyzer-model analyzer-mini   --proposer-model proposer-mini
+```

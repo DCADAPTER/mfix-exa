@@ -1,0 +1,1 @@
+Simulation diverged after 25 steps: residual increased rapidly.
