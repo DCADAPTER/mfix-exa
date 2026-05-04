@@ -138,3 +138,16 @@ python examples/simple_optimization/objective.py --x 3
 ```bash
 python -m src.agent.orchestrated_loop run   --config examples/simple_optimization/settings.local.yaml   --goal "minimize objective"   --max-iterations 8
 ```
+
+
+## Analyzer + Proposer Orchestration (권장 구조)
+
+역할 최소화 구성:
+- Analyzer: 이전 로그/input 기반 insight 생성
+- Proposer: insight 기반 다중 시나리오/파라미터 케이스 제안
+- Filter/Python tool: 유효 케이스만 통과
+- Simulation: 통과 케이스 실행 후 다음 iteration으로 피드백
+
+```bash
+python -m src.agent.analyzer_proposer_loop run   --config examples/simple_optimization/settings.local.yaml   --analyzer-model analyzer-mini   --proposer-model proposer-mini   --max-iterations 8
+```
