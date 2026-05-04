@@ -129,3 +129,12 @@ python -m src.agent.Agent_loop_execution run   --config examples/simple_optimiza
 ```bash
 python examples/simple_optimization/objective.py --x 3
 ```
+
+
+## Multi-agent Orchestration Loop
+
+역할 기반 모듈(`src/agent/roles`)로 분리된 오케스트레이션 실행:
+
+```bash
+python -m src.agent.orchestrated_loop run   --config examples/simple_optimization/settings.local.yaml   --goal "minimize objective"   --max-iterations 8
+```
