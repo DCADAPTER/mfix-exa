@@ -43,6 +43,7 @@ def run(
     state = loop.run_once(0, InitialReference(input_text=initial_input, error_log=initial_error_log))
     print(f"insight={state.insight}")
     print(f"selected_cases={state.selected_cases}")
+    print(f"simulation_results={state.simulation_results}")
 
 
 @cli.command("version")

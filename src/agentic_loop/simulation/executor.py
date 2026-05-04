@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from src.agentic_loop.shared.types import CaseProposal
 from src.harness.runner import SimulationHarness
 
@@ -16,7 +18,12 @@ class SimulationExecutor:
 
         Output: harness result dict (`status`, `objective`, `stdout`, ...).
         """
-        return self.harness.run_once(f"iteration={iteration}: {case.patch}")
+        if isinstance(case.patch, Mapping):
+            result = self.harness.run_once(case.patch)
+        else:
+            result = self.harness.run_once(case.patch)
+        result["iteration"] = str(iteration)
+        return result
 
 
 # TODO(core):

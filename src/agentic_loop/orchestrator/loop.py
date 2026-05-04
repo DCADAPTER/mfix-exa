@@ -27,11 +27,13 @@ class AgenticSimulationLoop:
           - updated `LoopState` containing insight/proposals/selected cases.
         """
         state = LoopState(iteration=iteration, reference=reference)
+
         state.insight = self.analyzer.run(state)
         state.proposals = self.proposer.run(state.insight)
         state.selected_cases = self.filter_module.select(state.proposals, state.insight, budget=3)
+
         for case in state.selected_cases:
-            _ = self.simulator.run_case(case, iteration)
+            state.simulation_results.append(self.simulator.run_case(case, iteration))
         return state
 
 

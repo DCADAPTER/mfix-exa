@@ -1,1 +1,48 @@
-Simulation diverged after 25 steps: residual increased rapidly.
+Host Name: hyu3
+=== If no file names and line numbers are shown below, one can run
+            addr2line -Cpfie my_exefile my_line_address
+    to convert `my_line_address` (e.g., 0x4a6b) into file name and line number.
+    Or one can use amrex/Tools/Backtrace/parse_bt.py.
+
+=== Please note that the line number reported by addr2line may not be accurate.
+    One can use
+            readelf -wl my_exefile | grep my_line_address'
+    to find out the offset for that line.
+
+ 0: mfix3d.gnu.MPI.CUDA.ex(+0x83cfed) [0x555ef7d8cfed]
+    amrex::BLBackTrace::handler(int) at /usr/include/x86_64-linux-gnu/bits/unistd.h:284
+ (inlined by) amrex::BLBackTrace::print_backtrace_info(_IO_FILE*) at /home/hyu3/tmp.build.deps/mfix/exec/../subprojects/amrex/Src/Base/AMReX_BLBackTrace.cpp:200
+ (inlined by) amrex::BLBackTrace::handler(int) at /home/hyu3/tmp.build.deps/mfix/exec/../subprojects/amrex/Src/Base/AMReX_BLBackTrace.cpp:98
+
+ 1: mfix3d.gnu.MPI.CUDA.ex(+0x6d388c) [0x555ef7c2388c]
+    std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_data() const at /usr/include/c++/11/bits/basic_string.h:195
+ (inlined by) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_is_local() const at /usr/include/c++/11/bits/basic_string.h:230
+ (inlined by) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() at /usr/include/c++/11/bits/basic_string.h:239
+ (inlined by) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() at /usr/include/c++/11/bits/basic_string.h:672
+ (inlined by) amrex::Gpu::Device::synchronize() at /home/hyu3/tmp.build.deps/mfix/exec/../subprojects/amrex/Src/Base/AMReX_GpuDevice.cpp:623
+
+ 2: mfix3d.gnu.MPI.CUDA.ex(+0x5893d3) [0x555ef7ad93d3]
+    amrex::ParIterBase_impl<false, amrex::Particle<0, 0>, 19, 2, amrex::ArenaAllocator, amrex::DefaultAssignor>::operator++() at /home/hyu3/tmp.build.deps/mfix/exec/../subprojects/amrex/Src/Particle/AMReX_ParIter.H:79 (discriminator 2)
+ (inlined by) MFIXParticleContainer::PICHydroStep(int, bool, bool, bool, double, double, amrex::RealVect&, amrex::Vector<std::array<amrex::MultiFab*, 3ul>, std::allocator<std::array<amrex::MultiFab*, 3ul> > >&, amrex::MultiFab&, std::array<amrex::MultiFab*, 3ul>&, amrex::MultiFab const*, amrex::FabArray<amrex::EBCellFlagFab> const*, amrex::MultiFab*, amrex::EBFArrayBoxFactory*, int, amrex::MultiFab const*) at /home/hyu3/tmp.build.deps/mfix/exec/../src/des/pic/mfix_pc_deposit_pic.cpp:339 (discriminator 2)
+
+ 3: mfix3d.gnu.MPI.CUDA.ex(+0x58f4fd) [0x555ef7adf4fd]
+    std::unique_ptr<amrex::EBFArrayBoxFactory, std::default_delete<amrex::EBFArrayBoxFactory> >::~unique_ptr() at /usr/include/c++/11/bits/unique_ptr.h:360
+ (inlined by) mfix::pic_iteration(bool, bool, bool, double, double, amrex::RealVect&, amrex::Vector<std::array<amrex::MultiFab*, 3ul>, std::allocator<std::array<amrex::MultiFab*, 3ul> > >&, amrex::Vector<amrex::MultiFab*, std::allocator<amrex::MultiFab*> >&, amrex::Vector<amrex::MultiFab*, std::allocator<amrex::MultiFab*> >*, amrex::EBFArrayBoxFactory*, int, amrex::MultiFab const*) at /home/hyu3/tmp.build.deps/mfix/exec/../src/des/pic/mfix_pic_iteration.cpp:125
+
+ 4: mfix3d.gnu.MPI.CUDA.ex(+0x570252) [0x555ef7ac0252]
+    mfix::EvolveParcels(double, double, amrex::RealVect&, int, amrex::Vector<amrex::MultiFab*, std::allocator<amrex::MultiFab*> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, int) at /home/hyu3/tmp.build.deps/mfix/exec/../src/des/pic/mfix_evolve_parcels.cpp:206
+
+ 5: mfix3d.gnu.MPI.CUDA.ex(+0x52297e) [0x555ef7a7297e]
+    mfix::Evolve(int, double&, double&, double, double) at /home/hyu3/tmp.build.deps/mfix/exec/../src/timestepping/mfix_evolve.cpp:135
+
+ 6: mfix3d.gnu.MPI.CUDA.ex(+0x656b0) [0x555ef75b56b0]
+    MFIXTimer::system_time() const at /home/hyu3/tmp.build.deps/mfix/exec/../src/prob/mfix_timer.H:69
+ (inlined by) MFIXTimer::elapsed_runtime(double) const at /home/hyu3/tmp.build.deps/mfix/exec/../src/prob/mfix_timer.H:77
+ (inlined by) main at /home/hyu3/tmp.build.deps/mfix/exec/../src/main.cpp:381
+
+ 7: /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x7f6ee9717d90]
+
+ 8: /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x7f6ee9717e40]
+
+ 9: mfix3d.gnu.MPI.CUDA.ex(+0x73235) [0x555ef75c3235]
+    ?? ??:0

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 
 
@@ -19,7 +20,7 @@ class Insight:
 @dataclass
 class CaseProposal:
     case_id: str
-    patch: str
+    patch: str | Mapping[str, object]
     expected_gain: float
 
 
@@ -30,3 +31,4 @@ class LoopState:
     insight: Insight | None = None
     proposals: list[CaseProposal] = field(default_factory=list)
     selected_cases: list[CaseProposal] = field(default_factory=list)
+    simulation_results: list[dict[str, str]] = field(default_factory=list)

@@ -18,6 +18,10 @@ harness:
   simulator_cmd: "mfixsolver -f case.mfx"
   work_dir: "./workspace/runs"
   timeout_sec: 1800
+  launch_mode: capture
+  tmux_session_prefix: mfix
+  open_terminal: false
+  terminal_cmd:
 
 training:
   base_model: "meta-llama/Llama-3.1-8B"

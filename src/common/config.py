@@ -27,6 +27,10 @@ class HarnessConfig(BaseModel):
     simulator_cmd: str
     work_dir: str
     timeout_sec: int
+    launch_mode: str = "capture"
+    tmux_session_prefix: str = "mfix"
+    open_terminal: bool = False
+    terminal_cmd: str | None = None
 
 
 class TrainingConfig(BaseModel):

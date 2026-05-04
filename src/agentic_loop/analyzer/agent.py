@@ -22,11 +22,13 @@ class AnalyzerAgent:
 
         Output: Insight object used by Proposer/Filter stages.
         """
-        # TODO: replace with analyzer-specific LLM + RAG retrieval.
-        err = state.reference.error_log.lower()
-        causes = ["numerical instability"] if "diverge" in err else ["boundary/input mismatch"]
-        evidence = [state.reference.error_log[:200]]
-        return Insight(causes=causes, evidence=evidence, confidence=0.55)
+        return Insight(
+            causes=[
+                "Parcel weight is too high. It needs to be lower to approximate the real case."
+            ],
+            evidence=[state.reference.error_log[:200]],
+            confidence=0.55,
+        )
 
 
 # TODO(core):

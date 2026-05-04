@@ -1,2 +1,626 @@
-# Example initial input (toy)
-x=5.0
+# Mfix-EXA Inputs block 
+#_______________________________________________________________________
+#_______________________________________________________________________
+# Inintialization
+
+amrex.fpe_trap_invalid		=0
+amrex.fpe_trap_zero		=0
+amrex.fpe_trap_overflow		=0
+
+
+
+#_______________________________________________________________________
+# Time stepping
+
+# mfix.stop_time 		= 30.0		
+mfix.stop_time 		= 100.0			## test
+
+# mfix.max_step 	= 100
+# mfix.fixed_dt 		= 0
+mfix.cfl 		= 0.7                          ###############
+mfix.dt_min 		= 1.000e-12
+mfix.dt_max 		= 1.000e-4
+
+mfix.tcoll_ratio 	= 10.
+
+#_______________________________________________________________________
+# Domain 
+# 
+geometry.coord_sys 	= 0  #Cartesian coordinates
+geometry.is_periodic 	= 0  		0  		0
+# geometry.prob_lo     	= -0.1875  	-0.0625  		-0.3125
+# geometry.prob_hi     	= 0.1875  	0.0625  		0.3125
+
+geometry.prob_lo     	= -6.4  	-3.2 	 	-15.2
+geometry.prob_hi     	= 6.4	  	3.2  		15.2
+###			  12.8		6.4		30.4
+
+#_______________________________________________________________________
+# Geometry
+# 
+mfix.geometry 			= "stl"
+# mfix.geometry_filename 		= "Furnace.stl"
+mfix.geometry_filename 		= "Furnacev2.stl"
+# stl.scaling_factor 		= 0.00002		## Small model
+stl.scaling_factor 		= 0.001			## Real scale
+
+mfix.write_eb_surface 		= true
+
+mfix.levelset__refinement    	= 1	  # levelset resolution, must be set for geometry refinement
+
+#_______________________________________________________________________
+# Mesh/Grids/Tiles
+#
+# Mesh
+amr.max_level 			= 0
+amr.n_cell 			= 96  48  228
+
+#amr.grid_eff			= 0.7
+#amr.n_error_buff		= 1
+
+# Grids
+# 
+amr.max_grid_size_x 		= 1024
+amr.max_grid_size_y 		= 1024
+amr.max_grid_size_z 		= 1024
+
+amr.blocking_factor 		= 4
+
+# Tiles
+fabarray.mfiter_tile_size 	= 512  512  512
+
+# particles.tile_size 		= 1024 1024 1024
+
+# Particle load balancing
+# mfix.load_balance_type 	= "KnapSack"
+mfix.dual_grid          	=  0
+mfix.regrid_int         	= -1
+
+#_______________________________________________________________________
+# Multigrid solvers
+
+# Nodal solver
+nodal_proj.verbose    		= 0
+nodal_proj.maxiter 		= 3000
+nodal_proj.bottom_verbose 	= 0
+nodal_proj.bottom_maxiter 	= 2000
+nodal_proj.mg_rtol       	= 1.e-6
+
+
+# MAC solver
+mac_proj.verbose     		= 0
+mac_proj.maxiter  		= 3000
+mac_proj.bottom_verbose  	= 0
+mac_proj.bottom_maxiter  	= 2000
+mac_proj.mg_rtol        	= 1.e-6
+
+# Diffusion
+diffusion.verbose		= 0
+diffusion.maxiter		= 3000
+diffusion.bottom_verbose	= 0
+diffusion.botom_maxiter		= 2000
+diffusion.mg_rtol		= 1.e-4
+
+#_______________________________________________________________________
+# Model options
+
+mfix.gravity 			= 0  0  -9.81
+
+mfix.advect_density 		= 1
+mfix.advect_enthalpy 		= 1
+mfix.solve_species 		= 1
+
+mfix.constraint_type 		= "IdealGasOpenSystem"
+
+mfix.drag_type 			= "WenYu"
+mfix.convection_type 		= "RanzMarshall"  
+
+#fluid discretization
+
+mfix.do_initial_proj    	= true
+mfix.initial_iterations 	= 5
+
+mfix.use_drag_coeff_in_proj_gp 	= true
+
+mfix.advection_type 		= "Godunov"
+mfix.use_drag_in_godunov	= true
+
+mfix.redistribution_type 	= "StateRedist" 
+mfix.max_solids_volume_fraction = 0.70                 #######################
+
+
+
+
+
+
+#_______________________________________________________________________
+# Species definitions
+
+species.solve = CO  O2  H2  CH4  CO2  N2  H2O  Ash  Char  Volatile  Glass
+
+# kg/mol
+species.CO.molecular_weight 		= 28.0e-3
+species.O2.molecular_weight 		= 32.0e-3
+species.H2.molecular_weight 		= 2.0e-3
+species.CH4.molecular_weight 		= 16.0e-3
+species.CO2.molecular_weight 		= 44.0e-3
+species.N2.molecular_weight 		= 28.0e-3
+species.H2O.molecular_weight		= 18.0e-3
+
+species.Moisture.molecular_weight 	= 18.0e-3
+species.Ash.molecular_weight 		= 12.0e-3
+species.Char.molecular_weight 		= 12.0e-3
+species.Volatile.molecular_weight 	= 21.72e-3
+species.Glass.molecular_weight		= 60.08e-3
+
+
+species.diffusivity 			= constant        # m2/s
+species.diffusivity.constant 		= 1.5e-05          ###############
+
+species.ignore_discontinuities		= 0
+
+species.specific_heat 			= NASA7-poly      #J/kg-K
+
+species.CO.specific_heat.NASA7.a0 	= 3.58107032		3.04979472
+species.CO.specific_heat.NASA7.a1 	= -6.10615743e-04	1.35230845e-03
+species.CO.specific_heat.NASA7.a2 	= 1.01724073e-06	-4.86014265e-07
+species.CO.specific_heat.NASA7.a3 	= 9.07393956e-10	7.88875338e-11
+species.CO.specific_heat.NASA7.a4 	= -9.04813290e-13	-4.70008070e-15
+species.CO.specific_heat.NASA7.a5 	= -14350.24443336264	-14272.241958459404
+
+species.O2.specific_heat.NASA7.a0 = 3.78285672	   	3.66134815
+species.O2.specific_heat.NASA7.a1 = -2.99705135e-03 	6.56435284e-04
+species.O2.specific_heat.NASA7.a2 = 9.84834430e-06	-1.41164567e-07
+species.O2.specific_heat.NASA7.a3 = -9.68231981e-09	2.05819718e-11
+species.O2.specific_heat.NASA7.a4 = 3.24407170e-12	-1.29927187e-15
+species.O2.specific_heat.NASA7.a5 = -1064.0561737037287	-1216.1058857876353
+
+species.H2.specific_heat.NASA7.a0 = 2.36329041	 	2.95658470
+species.H2.specific_heat.NASA7.a1 = 8.04506157e-03	8.33293048e-04
+species.H2.specific_heat.NASA7.a2 = -1.96356765e-05	-1.47586363e-07
+species.H2.specific_heat.NASA7.a3 = 2.03202267e-08	1.55346669e-11
+species.H2.specific_heat.NASA7.a4 = -7.43577044e-12	-6.94375367e-16
+species.H2.specific_heat.NASA7.a5 = -925.358784361286 	-819.641081168335
+
+species.CH4.specific_heat.NASA7.a0 = 5.16243450   	1.65753895
+species.CH4.specific_heat.NASA7.a1 = -1.36975425e-02 	1.00522461e-02
+species.CH4.specific_heat.NASA7.a2 = 4.92725223e-05 	-3.32519185e-06
+species.CH4.specific_heat.NASA7.a3 = -4.85499425e-08 	5.37870922e-10
+species.CH4.specific_heat.NASA7.a4 = 1.67034414e-11  	-3.15510821e-14
+species.CH4.specific_heat.NASA7.a5 = -10273.104378941356    -10035.486591055625
+
+species.CO2.specific_heat.NASA7.a0 = 2.35754145   	4.63794416
+species.CO2.specific_heat.NASA7.a1 = 8.98690672e-03     2.74230423e-03
+species.CO2.specific_heat.NASA7.a2 = -7.12426449e-06   	-9.96205403e-07
+species.CO2.specific_heat.NASA7.a3 = 2.45806031e-09   	1.60436232e-10
+species.CO2.specific_heat.NASA7.a4 = -1.42929643e-13   	-9.16481750e-15
+species.CO2.specific_heat.NASA7.a5 = -48386.92186046171 -49040.05666969074
+
+species.N2.specific_heat.NASA7.a0 = 3.53378243   	2.95489859
+species.N2.specific_heat.NASA7.a1 = -1.23758248e-04  	1.39799907e-03
+species.N2.specific_heat.NASA7.a2 = -5.03395044e-07 	-4.93019060e-07
+species.N2.specific_heat.NASA7.a3 = 2.43722150e-09  	7.86628396e-11
+species.N2.specific_heat.NASA7.a4 = -1.40992039e-12 	-4.61117590e-15
+species.N2.specific_heat.NASA7.a5 = -1047.799731755463  -924.675377977247
+
+species.H2O.specific_heat.NASA7.a0 = 4.20250808   	2.67950824
+species.H2O.specific_heat.NASA7.a1 = -2.03828011e-03  	2.97592410e-03
+species.H2O.specific_heat.NASA7.a2 = 6.52635605e-06 	-7.74482625e-07
+species.H2O.specific_heat.NASA7.a3 = -5.49298904e-09  	9.45206208e-11
+species.H2O.specific_heat.NASA7.a4 = 1.77360249e-12 	-4.27293688e-15
+species.H2O.specific_heat.NASA7.a5 = -30321.66935698914 -29913.461167042493
+
+# species.CO.specific_heat.NASA7.a0 	= 1062.94247283		905.24788801
+# species.CO.specific_heat.NASA7.a1 	= -0.18124453		0.40139566
+# species.CO.specific_heat.NASA7.a2 	= 0.00030194		-0.00014426
+# species.CO.specific_heat.NASA7.a3 	= 2.69335e-07		2.34156e-08
+# species.CO.specific_heat.NASA7.a4 	= -2.68569e-10		-1.39509e-12
+# species.CO.specific_heat.NASA7.a5 	= -4259476.3377		-4236323.44315
+
+# species.O2.specific_heat.NASA7.a0 = 982.8334605824   951.264015296
+# species.O2.specific_heat.NASA7.a1 = -0.7786714041344 0.17055009233024
+# species.O2.specific_heat.NASA7.a2 = 0.0025587229542784 -3.667631907968e-05
+# species.O2.specific_heat.NASA7.a3 = -2.5155877161856e-06 5.34745354304e-09
+# species.O2.specific_heat.NASA7.a4 = 8.428503796608e-10 -3.375670721024e-13
+# species.O2.specific_heat.NASA7.a5 = -276455.0946304  -315959.5104512
+
+# species.H2.specific_heat.NASA7.a0 = 9746.2284250432   12192.97875442
+# species.H2.specific_heat.NASA7.a1 = 33.17789774522    3.4365071429713594
+# species.H2.specific_heat.NASA7.a2 = -0.08097768584136 -0.00060864733199904
+# species.H2.specific_heat.NASA7.a3 = 8.3800776071184e-05 6.4065089714704e-08
+# species.H2.specific_heat.NASA7.a4 = -3.06651763071096e-08 -2.863609523328e-12
+# species.H2.specific_heat.NASA7.a5 = -3816186.9708232796  -3380206.3238261594
+
+# species.CH4.specific_heat.NASA7.a0 = 2675.8404257556   859.1507986542
+# species.CH4.specific_heat.NASA7.a1 = -7.099835941703   5.210372465733
+# species.CH4.specific_heat.NASA7.a2 = 0.025539385912607 -0.0017235439555146
+# species.CH4.specific_heat.NASA7.a3 = -2.5164851740689e-05 2.7879419232446e-07
+# species.CH4.specific_heat.NASA7.a4 = 8.657881018447e-09  -1.6353846422986e-11
+# species.CH4.specific_heat.NASA7.a5 = -5324849.738561    -5201685.506112
+
+# species.CO2.specific_heat.NASA7.a0 = 445.36695260999994   876.161502567
+# species.CO2.specific_heat.NASA7.a1 = 1.697731027203       0.5180531103930001
+# species.CO2.specific_heat.NASA7.a2 = -0.001345856282904   -0.0001881947675823
+# species.CO2.specific_heat.NASA7.a3 = 4.64356132176e-07    3.0308267140200005e-08
+# species.CO2.specific_heat.NASA7.a4 = -2.70010691556e-11   -1.731340437729e-12
+# species.CO2.specific_heat.NASA7.a5 = -9140851.35987       -9264236.10888
+
+# species.N2.specific_heat.NASA7.a0 = 1048.532017896   876.7675530715
+# species.N2.specific_heat.NASA7.a1 = -0.0367211303866  0.41480957378
+# species.N2.specific_heat.NASA7.a2 = -0.00014936568162935  -0.00014628695451085
+# species.N2.specific_heat.NASA7.a3 = 7.23164152334e-07   2.3340572740525e-08
+# species.N2.specific_heat.NASA7.a4 = -4.183468273325e-10  -1.368212578278e-12
+# species.N2.specific_heat.NASA7.a5 = -310899.606346   -274366.5629016
+
+# species.H2O.specific_heat.NASA7.a0 = 1939.475557936   1236.604579077
+# species.H2O.specific_heat.NASA7.a1 = -0.940675037281  1.373401776488
+# species.H2O.specific_heat.NASA7.a2 = 0.003011941395288 -0.0003574270633577
+# species.H2O.specific_heat.NASA7.a3 = -2.535038072917e-06  4.362167312202e-08
+# species.H2O.specific_heat.NASA7.a4 = 8.1852517824e-10  -1.971978754263e-12
+# species.H2O.specific_heat.NASA7.a5 = -13993580.85118  -13805191.01542
+
+
+
+
+	
+
+species.Ash.specific_heat.NASA7.a0 = 6033.477421532   6033.477421532
+species.Ash.specific_heat.NASA7.a1 = 5.857745066085   5.857745066085
+species.Ash.specific_heat.NASA7.a2 = 0.0              0.0
+species.Ash.specific_heat.NASA7.a3 = 0.0              0.0
+species.Ash.specific_heat.NASA7.a4 = 0.0              0.0
+species.Ash.specific_heat.NASA7.a5 = 0.0              0.0
+
+
+species.Char.specific_heat.NASA7.a0 = -210.46155362771   1107.432714223
+species.Char.specific_heat.NASA7.a1 = 3.0212514132603    0.9912837506033
+species.Char.specific_heat.NASA7.a2 = 0.0013737848615425 -0.00035298248990345
+species.Char.specific_heat.NASA7.a3 = -4.4585572842822e-06  5.9893501814278e-08
+species.Char.specific_heat.NASA7.a4 = 2.075907586148e-09   -3.702454458417e-12
+species.Char.specific_heat.NASA7.a5 = -75842.55317232   -516854.56338076
+
+
+species.Volatile.specific_heat.NASA7.a0 = 1500.0		1500.0
+species.Volatile.specific_heat.NASA7.a1 = 0.0			0.0
+species.Volatile.specific_heat.NASA7.a2 = 0.0			0.0
+species.Volatile.specific_heat.NASA7.a3 = 0.0			0.0
+species.Volatile.specific_heat.NASA7.a4 = 0.0			0.0
+species.Volatile.specific_heat.NASA7.a5 = 0.0			0.0
+
+species.Glass.specific_heat.NASA7.a0 	= 840.0			840.0
+species.Glass.specific_heat.NASA7.a1	= 0.0			0.0
+species.Glass.specific_heat.NASA7.a2	= 0.0			0.0
+species.Glass.specific_heat.NASA7.a3	= 0.0			0.0
+species.Glass.specific_heat.NASA7.a4	= 0.0			0.0
+species.Glass.specific_heat.NASA7.a5	= 0.0			0.0
+
+
+
+
+#_______________________________________________________________________
+# Fluid model
+
+fluid.solve 				= fluid
+
+fluid.viscosity        			= constant
+fluid.viscosity.constant 		= 29.4e-06        ##############
+
+# fluid.viscosity.eddy					= Smagorinsky-Lilly
+# fluid.viscosity.Smagorinsky-Lilly.constant 		= 0.2
+# fluid.viscosity.suspension				= Brinkman
+# fluid.viscosity.suspension.Brinkman.constant 		= 2
+
+
+fluid.species 				= CO O2 H2 CH4 CO2 N2 H2O
+
+fluid.reference_temperature 		= 298.15
+
+fluid.specific_heat 			= mixture
+
+
+fluid.thermal_conductivity 		= constant
+fluid.thermal_conductivity.constant 	= 0.076
+
+fluid.thermodynamic_pressure		= 101325.0
+
+# fluid.thermal_conductivity 		= NASA7-poly
+# fluid.thermal_conductivity.NASA7.a0 	= 0.0262	0.0262
+# fluid.thermal_conductivity.NASA7.a1 	= 0.045		0.045
+# fluid.thermal_conductivity.NASA7.a2 	= 0.085		0.085
+# fluid.thermal_conductivity.NASA7.a3 	= 0.12		0.12
+# fluid.thermal_conductivity.NASA7.a4 	= 0.155		0.155
+# fluid.thermal_conductivity.NASA7.a5 	= 0.18		0.18
+
+#_______________________________________________________________________
+# Solids model
+
+solids.types 				= sand  biomass
+solids.refernece_temperature 		= 298.15
+
+solids.specific_heat 			= mixture
+
+solids.species 				= Ash  Char  Volatile  Glass
+
+
+
+mfix.particle_init_type 		= "Auto"
+
+#_______________________________________________________________________
+
+dem.solve 				= None
+
+#_______________________________________________________________________
+
+pic.solve 				= sand  biomass
+
+pic.verbose 				= 1
+
+pic.max_iter 				= 10          ##################
+
+pic.beta 				= 3.0  
+pic.pressure_coefficient 		= 70.0
+
+pic.close_pack 				= 0.7
+pic.parcels_per_cell_at_pack 		= 32.0
+
+pic.small_number 			= 1.0e-7
+
+pic.damping_factor 			= 0.85
+pic.damping_factor_wall_tangent 	= 1.0
+pic.damping_factor_wall_normal 		= 0.85
+
+pic.velocity_reference_frame 		= 1.0
+pic.advance_vel_p 			= 1.0
+
+pic.initial_step_type 			= nth_eps
+
+
+
+
+#_______________________________________________________________________
+# Chemical reactions
+
+chemistry.solve 			=    Pyrolysis  rx7  rx8  rx9  rx5  
+
+
+
+chemistry.Pyrolysis.reaction 		=  Volatile(s)-->0.28CO(g)+0.18CO2(g)+0.12CH4(g)+0.22H2(g)+0.2H2O(g)
+
+chemistry.rx7.reaction			=  Char(s)+0.7O2(g)-->0.6CO(g)+0.4CO2(g)
+chemistry.rx8.reaction			=  Char(s)+H2O(g)-->CO(g)+H2(g)
+chemistry.rx9.reaction			=  Char(s)+CO2(g)-->2CO(g)
+
+chemistry.rx5.reaction			= CO(g)+0.5O2(g)-->CO2(g)
+
+#_______________________________________________________________________
+# Region definitions
+
+mfix.regions 		= full-domain  inlet   outlet   bed   bioinL   bioinR 
+
+# regions.full-domain.lo 	= -0.1875  	-0.0625  		-0.3125
+# regions.full-domain.hi 	= 0.1875  	0.0625  		0.3125
+
+# regions.inlet.lo 	= -0.1875  	-0.0625  		-0.3125
+# regions.inlet.hi 	= 0.1875 	0.0625  		-0.3125
+
+# regions.outlet.lo 	= -0.1875  	-0.0625  		0.3125
+# regions.outlet.hi 	= 0.1875  	0.0625  		0.3125
+
+# regions.bed.lo 		= -0.1875  	-0.0625  		-0.3125
+# regions.bed.hi 		= 0.1875 	0.0625  		-0.13
+
+# regions.bioinL.lo	= -0.1875	-0.0625			-0.28
+# regions.bioinL.hi	= 0.1875	-0.0625			-0.24
+
+# regions.bioinR.lo	= -0.1875	0.0625			-0.28
+# regions.bioinR.hi	= 0.1875	0.0625			-0.24
+
+
+
+regions.full-domain.lo 	= -6.4  	-3.2  		-15.2
+regions.full-domain.hi 	= 6.4  		3.2  		15.2
+
+regions.inlet.lo 	= -6.4  	-3.2  		-15.2
+regions.inlet.hi 	= 6.4 		3.2  		-15.2
+
+regions.outlet.lo 	= -6.4  	-3.2  		15.2
+regions.outlet.hi 	= 6.4  		3.2  		15.2
+
+regions.bed.lo 		= -6.4  	-3.2 		-15.2
+# regions.bed.hi 		= 6.4		3.2  		-9.806
+regions.bed.hi 		= 6.4		3.2  		-5
+
+regions.bioinL.lo	= -6.4		-3.2		-14.5
+regions.bioinL.hi	= 6.4		-3.2		-13.5
+
+regions.bioinR.lo	= -6.4		3.2		-14.5
+regions.bioinR.hi	= 6.4		3.2		-13.5
+
+
+#_______________________________________________________________________
+# Initial conditions
+
+ic.regions 				= full-domain   bed  
+
+# full-domain
+
+ic.full-domain.fluid.volfrac      	= 1.0
+ic.full-domain.fluid.velocity     	= 0.0  0.0  0.0
+ic.full-domain.fluid.temperature  	= 1113.15
+
+ic.full-domain.fluid.species.CO 	= 0.0
+ic.full-domain.fluid.species.O2 	= 0.0
+ic.full-domain.fluid.species.H2 	= 0.0
+ic.full-domain.fluid.species.CH4 	= 0.0
+ic.full-domain.fluid.species.CO2 	= 0.0
+ic.full-domain.fluid.species.N2 	= 1.0
+ic.full-domain.fluid.species.H2O 	= 0.0
+
+
+
+
+# bed
+
+ic.bed.fluid.volfrac     		= 0.99
+ic.bed.fluid.velocity     		= 0.0  0.0  0.0
+ic.bed.fluid.temperature  		= 1113.15
+
+ic.bed.fluid.species.CO 		= 0.0
+ic.bed.fluid.species.O2 		= 0.0
+ic.bed.fluid.species.H2 		= 0.0
+ic.bed.fluid.species.CH4 		= 0.0
+ic.bed.fluid.species.CO2 		= 0.0
+ic.bed.fluid.species.N2 		= 1.0
+ic.bed.fluid.species.H2O 		= 0.0
+
+
+ic.bed.solids 				= sand
+ic.bed.packing 				= "pseudo_random"
+
+
+ic.bed.sand.volfrac 			= 0.01
+ic.bed.sand.temperature 		= 1113.15
+ic.bed.sand.velocity 			= 0.0  0.0  0.0
+ic.bed.sand.diameter 			= constant
+ic.bed.sand.diameter.constant 		= 0.000425
+ic.bed.sand.density 			= constant
+ic.bed.sand.density.constant 		= 2300.0
+
+
+ic.bed.sand.species.Ash			= 0.0
+ic.bed.sand.species.Char		= 0.0
+ic.bed.sand.species.Volatile		= 0.0
+ic.bed.sand.species.Glass		= 1.0
+
+
+
+
+
+
+#_______________________________________________________________________
+# Boundary conditions
+
+bc.regions 				= inlet  outlet  bioinL  bioinR 
+
+
+
+# in
+bc.inlet 				= mi
+bc.inlet.fluid.volfrac 			= 1.0
+bc.inlet.fluid.velocity 		= 0.0	 0.0	6.442767
+# bc.inlet.fluid.velocity 		= 0.0	 0.0	10
+bc.inlet.fluid.temperature 		= 434.1301601
+
+bc.inlet.fluid.species.CO 		= 0.0
+bc.inlet.fluid.species.O2 		= 0.21
+bc.inlet.fluid.species.H2 		= 0.0
+bc.inlet.fluid.species.CH4 		= 0.0
+bc.inlet.fluid.species.CO2 		= 0.0
+bc.inlet.fluid.species.N2 		= 0.78
+bc.inlet.fluid.species.H2O 		= 0.01
+
+
+# out
+bc.outlet 				= po
+bc.outlet.fluid.pressure 		= 101325.0
+
+
+# bioin
+bc.bioinL				= mi
+bc.bioinL.fluid.volfrac			= 0.99
+bc.bioinL.fluid.velocity		= 0.0  13.609  0.0
+bc.bioinL.fluid.temperature		= 323.15
+
+bc.bioinL.fluid.species.CO		= 0.0
+bc.bioinL.fluid.species.O2		= 0.21
+bc.bioinL.fluid.species.H2		= 0.0
+bc.bioinL.fluid.species.CH4		= 0.0
+bc.bioinL.fluid.species.CO2		= 0.0
+bc.bioinL.fluid.species.N2		= 0.78
+bc.bioinL.fluid.species.H2O		= 0.01
+
+bc.bioinL.solids			= biomass
+bc.bioinL.biomass.volfrac		= 0.01
+bc.bioinL.biomass.temperature		= 283.15
+bc.bioinL.biomass.velocity		= 0.0  3.013  0.0
+bc.bioinL.biomass.diameter		= constant
+bc.bioinL.biomass.diameter.constant	= 0.0112
+bc.bioinL.biomass.density		= constant
+bc.bioinL.biomass.density.constant	= 750.0
+
+bc.bioinL.biomass.species.Ash		= 0.0262
+bc.bioinL.biomass.species.Char		= 0.1891
+bc.bioinL.biomass.species.Volatile	= 0.7847
+bc.bioinL.biomass.species.Glass		= 0.0
+
+
+bc.bioinR				= mi
+bc.bioinR.fluid.volfrac			= 0.99
+bc.bioinR.fluid.velocity		= 0.0  -13.609  0.0
+bc.bioinR.fluid.temperature		= 323.15
+
+bc.bioinR.fluid.species.CO		= 0.0
+bc.bioinR.fluid.species.O2		= 0.21
+bc.bioinR.fluid.species.H2		= 0.0
+bc.bioinR.fluid.species.CH4		= 0.0
+bc.bioinR.fluid.species.CO2		= 0.0
+bc.bioinR.fluid.species.N2		= 0.78
+bc.bioinR.fluid.species.H2O		= 0.01
+
+bc.bioinR.solids			= biomass
+bc.bioinR.biomass.volfrac		= 0.01
+bc.bioinR.biomass.temperature		= 283.15
+bc.bioinR.biomass.velocity		= 0.0  -3.013  0.0
+bc.bioinR.biomass.diameter		= constant
+bc.bioinR.biomass.diameter.constant	= 0.0112
+bc.bioinR.biomass.density		= constant
+bc.bioinR.biomass.density.constant	= 750.0
+
+bc.bioinR.biomass.species.Ash		= 0.02623
+bc.bioinR.biomass.species.Char		= 0.18917
+bc.bioinR.biomass.species.Volatile	= 0.7846
+bc.bioinR.biomass.species.Glass		= 0.0
+
+
+
+#_______________________________________________________________________
+# Output
+
+mfix.par_ascii_int  			= -1
+mfix.par_ascii_file 			="vis"
+
+mfix.plot_int       			= 100
+mfix.plot_file      			="plt"
+
+mfix.check_int      			= -1
+mfix.check_file     			="chk"
+
+
+mfix.plt_volfrac  			= 1
+mfix.plt_vel_g     			= 1
+mfix.plt_p_g       			= 1
+mfix.plt_X_g				= 1
+mfix.plt_X_s				= 1
+mfix.plt_ro_p				= 1
+mfix.plt_radius				= 1
+mfix.plt_T_g				= 1
+mfix.plt_T_p 				= 1
+mfix.plt_ro_p				= 1
+mfix.plt_ep_g				= 0
+mfix.plt_statwt				= 1
+mfix.plt_drag_p				= 1
+
+
+mfix.monitors 				= Mass_Fraction   #X_gk
+mfix.monitors.Mass_Fraction 		= Eulerian::AreaRegion::Average
+mfix.monitors.Mass_Fraction.variables 	= X_gk
+mfix.monitors.Mass_Fraction.region 	= outlet
+mfix.monitors.Mass_Fraction.plot_int 	= 100
+mfix.monitors.Mass_Fraction.plot_file 	= "Mass_Fraction"
+
+
+
+
+
+
+

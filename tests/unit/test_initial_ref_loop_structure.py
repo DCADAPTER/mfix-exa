@@ -8,4 +8,8 @@ def test_analyzer_proposer_basic() -> None:
     insight = AnalyzerAgent("a", "rag/a").run(state)
     cases = ProposerAgent("p", "rag/p").run(insight)
     assert insight.causes
-    assert len(cases) >= 3
+    assert len(cases) == 1
+    assert cases[0].patch == {
+        "pic.parcels_per_cell_at_pack": "64.0",
+        "pic.pressure_coefficient": "50.0",
+    }
