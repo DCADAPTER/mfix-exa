@@ -116,3 +116,16 @@ python -m src.agent.Agent_loop_execution run --config configs/settings.local.yam
 # iteration override
 python -m src.agent.Agent_loop_execution run --config configs/settings.local.yaml --max-iterations 12
 ```
+
+
+## Example: loop 적용 시험 (simple optimization)
+
+```bash
+python -m src.agent.Agent_loop_execution run   --config examples/simple_optimization/settings.local.yaml   --max-iterations 8
+```
+
+보조 확인:
+
+```bash
+python examples/simple_optimization/objective.py --x 3
+```

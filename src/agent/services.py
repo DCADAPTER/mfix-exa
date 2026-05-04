@@ -17,10 +17,15 @@ class AgentRuntime:
     state: AgentState = field(default_factory=AgentState)
 
     def _make_plan(self, step: int) -> str:
-        return f"iteration={step}: adjust parameters toward stable convergence"
+        # Toy search schedule for x in simple optimization example.
+        candidate_x = [-5, 0, 2, 2.5, 3, 3.5, 4, 5]
+        x = candidate_x[step % len(candidate_x)]
+        return f"iteration={step}: x={x}"
 
     def _score(self, result: dict[str, str]) -> float:
-        # Placeholder deterministic score for skeleton.
+        objective = result.get("objective")
+        if objective is not None:
+            return -abs(float(objective))
         return 1.0 if result.get("status") == "stubbed" else 0.0
 
     def loop(self) -> None:
