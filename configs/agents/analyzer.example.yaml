@@ -1,0 +1,9 @@
+model:
+  provider: openai_or_local
+  name: analyzer-mini
+rag:
+  index_path: rag/analyzer
+training:
+  dataset_path: data/analyzer/train.jsonl
+harness:
+  parser_profile: mfix_error_parser_v1
