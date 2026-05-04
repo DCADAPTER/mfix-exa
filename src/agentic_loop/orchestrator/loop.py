@@ -11,12 +11,21 @@ from src.agentic_loop.simulation.executor import SimulationExecutor
 
 @dataclass
 class AgenticSimulationLoop:
+    """Orchestrate Analyzer -> Proposer -> Filter -> Simulation."""
+
     analyzer: AnalyzerAgent
     proposer: ProposerAgent
     filter_module: ActiveLearningFilter
     simulator: SimulationExecutor
 
     def run_once(self, iteration: int, reference: InitialReference) -> LoopState:
+        """Input:
+          - `iteration`: loop index
+          - `reference`: initial input + error log context
+
+        Output:
+          - updated `LoopState` containing insight/proposals/selected cases.
+        """
         state = LoopState(iteration=iteration, reference=reference)
         state.insight = self.analyzer.run(state)
         state.proposals = self.proposer.run(state.insight)

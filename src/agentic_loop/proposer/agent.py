@@ -4,13 +4,25 @@ from src.agentic_loop.shared.types import CaseProposal, Insight
 
 
 class ProposerAgent:
-    """Own model/RAG/training asset scope for Proposer."""
+    """Generate multiple parameter-change cases from Analyzer insight.
+
+    Input:
+      - `insight` (Insight)
+      - optional proposal count `n_cases`
+    Output:
+      - `list[CaseProposal]`
+    """
 
     def __init__(self, model_name: str, rag_index_path: str):
+        """Input: model/rag identifiers. Output: initialized ProposerAgent instance."""
         self.model_name = model_name
         self.rag_index_path = rag_index_path
 
     def run(self, insight: Insight, n_cases: int = 6) -> list[CaseProposal]:
+        """Input: analyzer insight.
+
+        Output: candidate cases with patch + expected gain.
+        """
         base = [
             ("case_1", "x=1.5", 0.20),
             ("case_2", "x=2.0", 0.35),

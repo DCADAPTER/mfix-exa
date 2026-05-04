@@ -22,6 +22,15 @@ def run(
     analyzer_model: str = typer.Option("analyzer-mini", "--analyzer-model"),
     proposer_model: str = typer.Option("proposer-mini", "--proposer-model"),
 ) -> None:
+    """Input:
+      - config path
+      - initial input string
+      - initial error log string
+      - analyzer/proposer model names
+
+    Output:
+      - prints Insight + selected cases to stdout.
+    """
     settings = load_settings(config)
     harness = SimulationHarness(settings)
 
@@ -38,6 +47,7 @@ def run(
 
 @cli.command("version")
 def version() -> None:
+    """Input: none. Output: version-like string to stdout."""
     print("initial-ref loop")
 
 

@@ -47,6 +47,7 @@ class Settings(BaseModel):
 
 
 def _load_text_config(path: Path) -> dict:
+    """Input: config file path (.yaml/.yml/.json). Output: raw dict config."""
     text = path.read_text(encoding="utf-8")
     suffix = path.suffix.lower()
     if suffix == ".json":
@@ -64,6 +65,7 @@ def _load_text_config(path: Path) -> dict:
 
 
 def load_settings(config_path: str | Path) -> Settings:
+    """Input: config file path. Output: validated Settings object."""
     path = Path(config_path)
     raw = _load_text_config(path)
     return Settings.model_validate(raw)

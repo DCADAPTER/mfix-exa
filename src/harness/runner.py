@@ -12,10 +12,12 @@ class SimulationHarness:
     settings: Settings
 
     def _extract_x(self, plan: str) -> float | None:
+        """Input: plan string. Output: parsed x value or None."""
         m = re.search(r"x\s*=\s*([-+]?\d*\.?\d+)", plan)
         return float(m.group(1)) if m else None
 
     def run_once(self, plan: str) -> dict[str, str]:
+        """Input: plan string. Output: execution result dict (status/objective/stdout)."""
         x = self._extract_x(plan)
         if x is not None and "examples/simple_optimization/objective.py" in self.settings.harness.simulator_cmd:
             cmd = self.settings.harness.simulator_cmd.split() + ["--x", str(x)]
